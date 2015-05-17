@@ -1,4 +1,4 @@
-package main
+package olink
 
 import (
 	"encoding/json"
@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-func main() {
+func init() {
 	file, e := ioutil.ReadFile("./config.json")
 	if e != nil {
 		fmt.Printf("File error: %v\n", e)
