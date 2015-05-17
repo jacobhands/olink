@@ -21,7 +21,13 @@ func main() {
 	var c Config
 	json.Unmarshal(file, &c)
 
-	http.ListenAndServe(":80", &handler{c})
+	err := http.ListenAndServe(c.Host + ":" + string(c.Port), &handler{c})
+	if(err != nil){
+		// panic(err)
+	}
+	fmt.Println(c.Urls[0])
+	fmt.Println("Listening!")
+
 }
 
 type handler struct{ Config }
@@ -43,15 +49,15 @@ func (h *handler) redirectShortUrl(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	if url != "" {
-		http.Redirect(w, r, url, 302)
+		http.Redirect(w, r, url, h.RedirectType)
 		fmt.Println("Redirected: " + url)
-	} else {
-		fmt.Println("Not found: " + r.URL.Path)
-		http.Error(w, "Not found.", 404)
 	}
 }
 
 type Config struct {
+	Port int
+	Host string
+	RedirectType int
 	Urls []url
 }
 
