@@ -21,7 +21,7 @@ func main() {
 	var c Config
 	json.Unmarshal(file, &c)
 
-	http.ListenAndServe(":80", &handler{c})
+	http.ListenAndServe(":8080", &handler{c})
 }
 
 type handler struct{ Config }
@@ -47,6 +47,7 @@ func (h *handler) redirectShortUrl(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Redirected: " + url)
 	} else {
 		fmt.Println("Not found: " + r.URL.Path)
+		http.Error(w, "Not found.", 404)
 	}
 }
 
