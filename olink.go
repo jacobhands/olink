@@ -1,4 +1,4 @@
-package olink
+package main
 
 import (
 	"encoding/json"
@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-func init() {
+func main() {
 	file, e := ioutil.ReadFile("./config.json")
 	if e != nil {
 		fmt.Printf("File error: %v\n", e)
@@ -21,7 +21,7 @@ func init() {
 	var c Config
 	json.Unmarshal(file, &c)
 
-	http.ListenAndServe(":8080", &handler{c})
+	http.ListenAndServe(":80", &handler{c})
 }
 
 type handler struct{ Config }
