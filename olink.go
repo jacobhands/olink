@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strconv"
 )
 
 func main() {
@@ -21,13 +22,15 @@ func main() {
 	var c Config
 	json.Unmarshal(file, &c)
 
-	err := http.ListenAndServe(c.Host + ":" + string(c.Port), &handler{c})
-	if(err != nil){
-		// panic(err)
-	}
 	fmt.Println(c.Urls[0])
-	fmt.Println("Listening!")
+	host := c.Host + ":" + strconv.Itoa(c.Port)
+	fmt.Println("Listening on: ", host)
 
+	err := http.ListenAndServe(host, &handler{c})
+	if(err != nil){
+		fmt.Println(err.Error())
+		//panic(err)
+	}
 }
 
 type handler struct{ Config }
